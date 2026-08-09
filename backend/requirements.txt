@@ -1,0 +1,7 @@
+Flask
+Werkzeug
+Flask-JWT-Extended
+Flask-CORS
+python-dotenv
+google-generativeai
+gunicorn
