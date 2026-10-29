@@ -47,7 +47,13 @@ tables (`users`, `history`) are created automatically on first run.
 
 ## Note
 
-`app.py` currently has the JWT signing secret hardcoded as a literal string.
-For anything beyond a class project, move it into `.env` alongside
-`GEMINI_API_KEY` and read it with `os.getenv(...)`, the same way the Gemini
-key is handled.
+All configuration comes from environment variables (see `.env.example`):
+`GEMINI_API_KEY`, `JWT_SECRET_KEY` (required in production), and the optional
+`CORS_ORIGINS`, `DATABASE_PATH`, `JWT_EXPIRES_HOURS` and `GEMINI_MODEL`.
+
+SQLite lives on the server's local disk. On hosts with an ephemeral
+filesystem (e.g. Render free tier) the data is lost on every redeploy or
+restart; mount a persistent disk and point `DATABASE_PATH` at it, or move to a
+hosted database.
+
+Every error response is JSON in the form `{"error": "message"}`.
