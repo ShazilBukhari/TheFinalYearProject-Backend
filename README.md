@@ -43,6 +43,8 @@ tables (`users`, `history`) are created automatically on first run.
 | `/api/login` | POST | — | Log in, returns a JWT |
 | `/api/debug` | POST | JWT | Send `raw_code` + `error_log`, get an AI fix |
 | `/api/history` | GET | JWT | Past debug requests for the logged-in user |
+| `/api/history/<id>` | DELETE | JWT | Delete one of your own history items |
+| `/api/history` | DELETE | JWT | Delete all of your history |
 | `/api/private` | GET | JWT | Sample protected route |
 
 ## Note

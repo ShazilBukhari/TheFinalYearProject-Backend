@@ -324,6 +324,33 @@ def history():
   return jsonify(history_list), 200
 
 
+@app.route("/api/history/<int:item_id>", methods=["DELETE"])
+@jwt_required()
+def delete_history_item(item_id):
+  user_id = get_jwt_identity()
+  with closing(get_conn()) as conn:
+    # Scoped to the logged-in user so nobody can delete someone else's history.
+    cursor = conn.execute("DELETE FROM history WHERE id = ? AND user_id = ?", (item_id, user_id))
+    conn.commit()
+    deleted = cursor.rowcount
+
+  if deleted == 0:
+    raise ApiError("History item not found", 404)
+  return jsonify({"message": "History item deleted"}), 200
+
+
+@app.route("/api/history", methods=["DELETE"])
+@jwt_required()
+def clear_history():
+  user_id = get_jwt_identity()
+  with closing(get_conn()) as conn:
+    cursor = conn.execute("DELETE FROM history WHERE user_id = ?", (user_id,))
+    conn.commit()
+    deleted = cursor.rowcount
+
+  return jsonify({"message": "History cleared", "deleted": deleted}), 200
+
+
 if __name__ == "__main__":
   app.run(
     host="127.0.0.1",
